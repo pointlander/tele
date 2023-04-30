@@ -82,7 +82,7 @@ func R() {
 	}
 	phi := 0.5 * math.Asin(sin(k, h))
 
-	qsim.RY(-2*phi, q0)
+	qsim.RY(2*phi, q0)
 	fmt.Println("2*phi=", 2*phi)
 
 	qsim.H(q0)
@@ -93,7 +93,52 @@ func R() {
 	}
 }
 
+// Split split mode
+func Split() {
+	qsim := q.New()
+	q0 := qsim.Zero()
+	q1 := qsim.Zero()
+
+	// Define the parameters
+	k := 1.0
+	h := 1.5
+
+	// Prepare the ground state
+	alpha := -math.Asin((1 / math.Sqrt(2)) * (math.Sqrt(1 + h/math.Sqrt(h*h+k*k))))
+
+	qsim.RY(2*alpha, q0)
+	qsim.I(q0)
+	fmt.Println("2*alpha=", 2*alpha)
+
+	sin := func(k, h float64) float64 {
+		a := h*h + 2*k*k
+		b := h * k
+		return b / math.Sqrt(a*a+b*b)
+	}
+	phi := 0.5 * math.Asin(sin(k, h))
+
+	qsim.RY(2*phi, q0)
+	fmt.Println("2*phi=", 2*phi)
+
+	qsim.H(q0)
+	qsim.Measure(q0)
+
+	qsim.RY(2*alpha, q1)
+	qsim.I(q1)
+	qsim.RY(-2*phi, q1)
+	qsim.H(q1)
+	qsim.Measure(q1)
+
+	for _, s := range qsim.State() {
+		fmt.Println(s)
+	}
+}
+
 func main() {
+	fmt.Println("Split:")
+	Split()
+	fmt.Println("\nR:")
 	R()
+	fmt.Println("\nSR:")
 	SR()
 }
