@@ -97,7 +97,6 @@ func R() {
 func Split() {
 	qsim := q.New()
 	q0 := qsim.Zero()
-	q1 := qsim.Zero()
 
 	// Define the parameters
 	k := 1.0
@@ -122,6 +121,12 @@ func Split() {
 
 	qsim.H(q0)
 
+	for _, s := range qsim.State() {
+		fmt.Println(s)
+	}
+
+	qsim = q.New()
+	q1 := qsim.Zero()
 	qsim.RY(2*alpha, q1)
 	qsim.I(q1)
 	qsim.RY(-2*phi, q1)
