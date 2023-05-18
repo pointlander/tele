@@ -86,7 +86,6 @@ func R() {
 	fmt.Println("2*phi=", 2*phi)
 
 	qsim.H(q0)
-	//qsim.Measure(q0)
 
 	for _, s := range qsim.State() {
 		fmt.Println(s)
@@ -121,18 +120,11 @@ func Split() {
 
 	qsim.H(q0)
 
-	for _, s := range qsim.State() {
-		fmt.Println(s)
-	}
-
-	qsim = q.New()
 	q1 := qsim.Zero()
 	qsim.RY(2*alpha, q1)
 	qsim.I(q1)
 	qsim.RY(-2*phi, q1)
 	qsim.H(q1)
-
-	//qsim.Measure(q0, q1)
 
 	for _, s := range qsim.State() {
 		fmt.Println(s)
